@@ -10,20 +10,16 @@ import json
 load_dotenv()
 
 base_url = os.getenv("JIRA_BASE_URL")
-issueIdOrKey = "#######"
+issueIdOrKey = os.getenv("JIRA_ISSUE")
 email = os.getenv("JIRA_EMAIL")
 api_token = os.getenv("JIRA_TOKEN")
 
-url2 = f"{base_url}/rest/api/3/issue/{issueIdOrKey}"
+url2 = f"{base_url}/rest/servicedeskapi/request/{issueIdOrKey}/sla/"
 
 auth = HTTPBasicAuth(email, api_token)
 
 headers = {
   "Accept": "application/json"
-}
-
-params = {
-    "maxResults" : 10
 }
 
 response = requests.request(
@@ -33,10 +29,4 @@ response = requests.request(
    auth=auth
 )
 
-if response.status_code != 200:
-    print(f"Błąd: {response.status_code} - {response.text}")
-    exit()
-
-data = response.json()
-
-print(data)
+print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
