@@ -1,16 +1,42 @@
-# This is a sample Python script.
+# This code sample uses the 'requests' library:
+# http://docs.python-requests.org
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import requests
+from dotenv import load_dotenv
+from requests.auth import HTTPBasicAuth
+import json
 
+load_dotenv()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+base_url = os.getenv("JIRA_BASE_URL")
+issueIdOrKey = "#######"
+email = os.getenv("JIRA_EMAIL")
+api_token = os.getenv("JIRA_TOKEN")
 
+url2 = f"{base_url}/rest/api/3/issue/{issueIdOrKey}"
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+auth = HTTPBasicAuth(email, api_token)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+headers = {
+  "Accept": "application/json"
+}
+
+params = {
+    "maxResults" : 10
+}
+
+response = requests.request(
+   "GET",
+   url2,
+   headers=headers,
+   auth=auth
+)
+
+if response.status_code != 200:
+    print(f"Błąd: {response.status_code} - {response.text}")
+    exit()
+
+data = response.json()
+
+print(data)
