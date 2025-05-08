@@ -14,7 +14,7 @@ issueIdOrKey = os.getenv("JIRA_ISSUE")
 email = os.getenv("JIRA_EMAIL")
 api_token = os.getenv("JIRA_TOKEN")
 
-url2 = f"{base_url}/rest/servicedeskapi/request/{issueIdOrKey}/sla/"
+url = f"{base_url}/rest/servicedeskapi/request/{issueIdOrKey}/sla/"
 
 auth = HTTPBasicAuth(email, api_token)
 
@@ -24,7 +24,7 @@ headers = {
 
 response = requests.request(
    "GET",
-   url2,
+   url,
    headers=headers,
    auth=auth
 )
