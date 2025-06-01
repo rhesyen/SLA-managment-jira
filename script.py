@@ -1,5 +1,3 @@
-# This code sample uses the 'requests' library:
-# http://docs.python-requests.org
 import os
 
 import requests
@@ -15,6 +13,7 @@ email = os.getenv("JIRA_EMAIL")
 api_token = os.getenv("JIRA_TOKEN")
 
 url = f"{base_url}/rest/servicedeskapi/request/{issueIdOrKey}/sla/"
+url2 = f"{base_url}/rest/api/3/issue/{issueIdOrKey}?expand=names"
 
 auth = HTTPBasicAuth(email, api_token)
 
@@ -24,9 +23,16 @@ headers = {
 
 response = requests.request(
    "GET",
-   url,
+   url2,
    headers=headers,
    auth=auth
 )
 
-print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+data = response.json()
+
+# print("Nazwy pól niestandardowych w zgłoszeniu:")
+# for field_id, field_name in data.get("names", {}).items():
+#     if field_id.startswith("customfield_"):
+#         print(f"{field_id} => {field_name}")
+
+# print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
