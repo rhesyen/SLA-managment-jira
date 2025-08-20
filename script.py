@@ -35,4 +35,5 @@ data = response.json()
 #     if field_id.startswith("customfield_"):
 #         print(f"{field_id} => {field_name}")
 
+# print("Informacje i czasy SLA dla Issue o danej nazwie:")
 # print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
